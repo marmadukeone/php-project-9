@@ -1,0 +1,25 @@
+{
+    "name": "hexlet/code",
+    "description": "Educational Project 3: SEO Analyze",
+    "license": "MIT",
+    "autoload": {
+        "files": [
+            "public/index.php"
+        ]
+    },
+    "require": {
+        "docopt/docopt": "^1.0",
+        "symfony/yaml": "^5.3",
+        "lstrojny/functional-php": "^1.17",
+        "slim/slim": "^4.11",
+        "slim/psr7": "^1.6",
+        "slim/http": "^1.3",
+        "slim/php-view": "^3.2",
+        "php-di/php-di": "^6.4"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "*",
+        "phpunit/phpunit": "^9",
+        "phpstan/phpstan": "^1.8"
+    }
+}
