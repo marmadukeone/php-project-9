@@ -6,49 +6,67 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Slim\Factory\AppFactory;
 use Slim\Views\PhpRenderer;
-use PhpProject9\DBConnection\Connection;
-
-//Создаем подключение к БД
-
+//use DBConnection\Connection;
+use Carbon\Carbon;
+use Slim\Flash\Messages; 
+use DI\Container;
+use Vlucas\Valitron;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use PDO;
 
 session_start();
 
-// $container = new Container();
-// $container->set('renderer', function () {
-//     return new Slim\Views\PhpRenderer(__DIR__ . '/../templates');
-// });
+try {
+    Connection::get()->connect();
+    echo 'A connection to the PostgreSQL database sever has been established successfully.';
+} catch (\PDOException $e) {
+    echo $e->getMessage();
+}
 
-// $container->set('flash', function () {
-//     return new Slim\Flash\Messages();
-// });
+$container = new Container();
+$container->set('renderer', function () {
+     return new PhpRenderer(__DIR__ . '/../templates');
+ });
 
-// $container->set('connection', function () {
-//     $pdo = Connection::get()->connect();
-//     return $pdo;
-// });
-var_dump("1");
+ $container->set('flash', function () {
+     return new Messages();
+ });
 
+$container->set('connection', function () {
+     $pdo = Connection::get()->connect();
+     return $pdo;
+});
+var_dump("VLAD PIDORAS");
+
+AppFactory::setContainer($container);
 $app = AppFactory::create();
 $app->addErrorMiddleware(true, true, true);
 
-$app->get('/', function ($request, $response, $args) {
-    $renderer = new PhpRenderer('../templates');
-    //echo "1";
-    $data = [];
-    return $renderer->render($response, "index.phtml", $args);
-});
+$router = $app->getRouteCollector()->getRouteParser();
 
-$app->get('/urls', function ($request, $response, $args) {
-    $renderer = new PhpRenderer('../templates');
+$app->get('/', function ($request, $response) use ($router) {
+    //$router->urlFor('urls'); // /users
+    //$router->urlFor('urls', ['id' => 1]); // /users/4
+    
     //echo "1";
     $data = [];
-    return $renderer->render($response, "urls.phtml", $args);
-});
+    return $this->get('renderer')->render($response, "index.phtml", $data);
+})->setName('main');
+
+$app->get('/urls', function ($request, $response) {
+    //echo "1";
+    $data = [];
+    return $this->get('renderer')->render($response, "urls.phtml", $data);
+})->setName('urls');
 
 $app->get('/urls/{id}', function ($request, $response, $args) {
-    $renderer = new PhpRenderer('../templates');
     //echo "1";
-    $data = [];
-    return $renderer->render($response, "url.phtml", $args);
+    var_dump($args);
+    $data = [
+        'id' => $args['id']
+    ];
+    var_dump($data);
+    return $this->get('renderer')->render($response, "url.phtml", $data);
 });
 $app->run();

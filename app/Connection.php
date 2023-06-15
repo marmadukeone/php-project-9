@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpProject9\DBConnection;
+namespace DBConnection;
 
 /**
  * Создание класса Connection
