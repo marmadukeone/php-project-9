@@ -37,4 +37,18 @@ $app->get('/', function ($request, $response, $args) {
     $data = [];
     return $renderer->render($response, "index.phtml", $args);
 });
+
+$app->get('/urls', function ($request, $response, $args) {
+    $renderer = new PhpRenderer('../templates');
+    //echo "1";
+    $data = [];
+    return $renderer->render($response, "urls.phtml", $args);
+});
+
+$app->get('/urls/{id}', function ($request, $response, $args) {
+    $renderer = new PhpRenderer('../templates');
+    //echo "1";
+    $data = [];
+    return $renderer->render($response, "url.phtml", $args);
+});
 $app->run();
