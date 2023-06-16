@@ -17,12 +17,12 @@ use PDO;
 
 session_start();
 
-try {
-    Connection::get()->connect();
-    echo 'A connection to the PostgreSQL database sever has been established successfully.';
-} catch (\PDOException $e) {
-    echo $e->getMessage();
-}
+// try {
+//     Connection::get()->connect();
+//     echo 'A connection to the PostgreSQL database sever has been established successfully.';
+// } catch (\PDOException $e) {
+//     echo $e->getMessage();
+// }
 
 $container = new Container();
 $container->set('renderer', function () {
@@ -37,7 +37,6 @@ $container->set('connection', function () {
      $pdo = Connection::get()->connect();
      return $pdo;
 });
-var_dump("VLAD PIDORAS");
 
 AppFactory::setContainer($container);
 $app = AppFactory::create();

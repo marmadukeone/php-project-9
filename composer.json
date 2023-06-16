@@ -2,12 +2,6 @@
     "name": "hexlet/code",
     "description": "Educational Project 3: SEO Analyze",
     "license": "MIT",
-    "autoload": {
-        "files": [
-            "public/index.php",
-            "app/"
-        ]
-    },
     "require": {
         "docopt/docopt": "^1.0",
         "symfony/yaml": "^5.3",
