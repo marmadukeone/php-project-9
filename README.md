@@ -3,3 +3,5 @@
 
 Hello ebat'
 
+# TODO
+1. Create .env and Postgresql BD

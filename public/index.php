@@ -6,60 +6,52 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Slim\Factory\AppFactory;
 use Slim\Views\PhpRenderer;
-//use DBConnection\Connection;
+use PhpProject9\Database\Repository;
 use Carbon\Carbon;
-use Slim\Flash\Messages; 
+use Slim\Flash\Messages;
 use DI\Container;
-use Vlucas\Valitron;
+
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use PDO;
+
 
 session_start();
-
-// try {
-//     Connection::get()->connect();
-//     echo 'A connection to the PostgreSQL database sever has been established successfully.';
-// } catch (\PDOException $e) {
-//     echo $e->getMessage();
-// }
-
+$db = new Repository();
 $container = new Container();
 $container->set('renderer', function () {
      return new PhpRenderer(__DIR__ . '/../templates');
- });
+});
 
  $container->set('flash', function () {
      return new Messages();
  });
 
-$container->set('connection', function () {
-     $pdo = Connection::get()->connect();
-     return $pdo;
-});
 
-AppFactory::setContainer($container);
-$app = AppFactory::create();
-$app->addErrorMiddleware(true, true, true);
+ AppFactory::setContainer($container);
+ $app = AppFactory::create();
+ $app->addErrorMiddleware(true, true, true);
 
-$router = $app->getRouteCollector()->getRouteParser();
+ $router = $app->getRouteCollector()->getRouteParser();
 
-$app->get('/', function ($request, $response) use ($router) {
+
+ $app->get('/', function ($request, $response) use ($router) {
     //$router->urlFor('urls'); // /users
     //$router->urlFor('urls', ['id' => 1]); // /users/4
-    
+    $url = 'http://username:password@hostname:9090/path?arg=value#anchor';
+    $parseUrl = parse_url($url);
+    var_dump($parseUrl);
     //echo "1";
     $data = [];
     return $this->get('renderer')->render($response, "index.phtml", $data);
-})->setName('main');
+ })->setName('main');
 
-$app->get('/urls', function ($request, $response) {
+ $app->get('/urls', function ($request, $response) {
     //echo "1";
     $data = [];
     return $this->get('renderer')->render($response, "urls.phtml", $data);
-})->setName('urls');
+ })->setName('urls');
 
-$app->get('/urls/{id}', function ($request, $response, $args) {
+ $app->get('/urls/{id}', function ($request, $response, $args) {
     //echo "1";
     var_dump($args);
     $data = [
@@ -67,5 +59,5 @@ $app->get('/urls/{id}', function ($request, $response, $args) {
     ];
     var_dump($data);
     return $this->get('renderer')->render($response, "url.phtml", $data);
-});
-$app->run();
+ });
+ $app->run();
