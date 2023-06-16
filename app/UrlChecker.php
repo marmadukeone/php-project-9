@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpProject9\UrlCheker;
+namespace App;
 
 use SebastianBergmann\Type\MixedType;
 use Valitron\Validator;

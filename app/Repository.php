@@ -1,8 +1,6 @@
 <?php
 
-namespace PhpProject9\Database;
-
-require __DIR__ . '/../vendor/autoload.php';
+namespace App;
 
 use PDO;
 use Carbon\Carbon;

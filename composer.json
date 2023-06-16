@@ -2,6 +2,13 @@
     "name": "hexlet/code",
     "description": "Educational Project 3: SEO Analyze",
     "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "PhpProject9\\": "public/",
+            "App\\": "app/"
+           
+        }
+    },
     "require": {
         "docopt/docopt": "^1.0",
         "symfony/yaml": "^5.3",

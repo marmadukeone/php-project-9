@@ -6,7 +6,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Slim\Factory\AppFactory;
 use Slim\Views\PhpRenderer;
-use PhpProject9\Database\Repository;
+use App\Repository;
 use Carbon\Carbon;
 use Slim\Flash\Messages;
 use DI\Container;
