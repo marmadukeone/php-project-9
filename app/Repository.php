@@ -20,12 +20,14 @@ class Repository
         $host = $databaseUrl['host'];
         $port = $databaseUrl['port'];
         $dbName = ltrim($databaseUrl['path'], '/');
-
+        
         $dsn = "pgsql:host=$host;port=$port;dbname=$dbName;user=$username;password=$password";
+        var_dump($dsn);
+        var_dump($this->db = new PDO($dsn));
         $this->db = new PDO($dsn);
     }
 
-    public function insertUrl(string $name): mixed
+    public function insertUrl(string $name)
     {
         // подготовка запроса для добавления данных
         $created_at = Carbon::now();
@@ -40,7 +42,7 @@ class Repository
         return $this->db->lastInsertId();
     }
 
-    public function all(): mixed
+    public function all()
     {
         $sql = 'SELECT * FROM urls';
         $stmt = $this->db->prepare($sql);

@@ -14,3 +14,5 @@ CREATE TABLE IF NOT EXISTS urls_checks (
             title varchar(255),
             description varchar(255),
             created_at timestamp);
+
+INSERT INTO urls VALUES (1,test);

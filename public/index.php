@@ -34,12 +34,14 @@ $container->set('renderer', function () {
  $router = $app->getRouteCollector()->getRouteParser();
 
 
- $app->get('/', function ($request, $response) use ($router) {
+ $app->get('/', function ($request, $response) use ($router, $db) {
     //$router->urlFor('urls'); // /users
     //$router->urlFor('urls', ['id' => 1]); // /users/4
-    $url = 'http://username:password@hostname:9090/path?arg=value#anchor';
-    $parseUrl = parse_url($url);
-    var_dump($parseUrl);
+    //$url = 'http://username:password@hostname:9090/path?arg=value#anchor';
+    //$parseUrl = parse_url($url);
+    $newid = $db->insertUrl("'http://username:password@hostname:9090/path?arg=value#anchor'");
+    var_dump($newid);
+    var_dump($db->all());
     //echo "1";
     $data = [];
     return $this->get('renderer')->render($response, "index.phtml", $data);
