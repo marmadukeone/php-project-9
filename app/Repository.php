@@ -11,9 +11,10 @@ class Repository
 
     public function __construct()
     {
-        //$dbUrl = 'postgresql://sal:vjkjnjd@localhost:5432/hexlet33';
+        $dbUrl = 'postgresql://aleksandrsarapulov:2211@localhost:5432/project-9';
 
-        $databaseUrl = parse_url($_ENV['DATABASE_URL']);
+        //$databaseUrl = parse_url($_ENV['DATABASE_URL']);
+        $databaseUrl = parse_url($dbUrl);
         $username = $databaseUrl['user'];
         $password = $databaseUrl['pass'];
         $host = $databaseUrl['host'];
@@ -71,9 +72,9 @@ class Repository
     public function addCheck(
         mixed $id,
         mixed $statusCode,
-        mixed $title = '',
-        mixed $h1 = '',
-        mixed $description = ''
+        ?string $title = '',
+        ?string $h1 = '',
+        ?string $description = ''
     ): mixed {
         // подготовка запроса для добавления данных
         $created_at = Carbon::now();
