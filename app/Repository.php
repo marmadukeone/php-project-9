@@ -51,7 +51,7 @@ class Repository
         return $result;
     }
 
-    public function findUrl(int $id): mixed
+    public function findUrl(int $id)
     {
         $sql = 'SELECT id, name, created_at FROM urls WHERE id = :id';
         $stmt = $this->db->prepare($sql);
@@ -61,7 +61,7 @@ class Repository
         return $result;
     }
 
-    public function findId(string $name): mixed
+    public function findId(string $name)
     {
         $sql = 'SELECT id FROM urls WHERE name = :name';
         $stmt = $this->db->prepare($sql);

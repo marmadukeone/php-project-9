@@ -39,27 +39,33 @@ $container->set('renderer', function () {
     //$router->urlFor('urls', ['id' => 1]); // /users/4
     //$url = 'http://username:password@hostname:9090/path?arg=value#anchor';
     //$parseUrl = parse_url($url);
-    $newid = $db->insertUrl("http://username:password@hostname:9090/path?arg=value#anchor");
-    var_dump($newid);
+    //$newid = $db->insertUrl("http://username:password@hostname:9090/path?arg=value#anchor");
+    //var_dump($newid);
     var_dump($db->all());
     //echo "1";
     $data = [];
     return $this->get('renderer')->render($response, "index.phtml", $data);
  })->setName('main');
 
- $app->get('/urls', function ($request, $response) {
-    //echo "1";
-    $data = [];
+ $app->get('/urls', function ($request, $response) use ($router, $db) {
+    $data = [
+        'urls' => $db->all()
+    ];
     return $this->get('renderer')->render($response, "urls.phtml", $data);
  })->setName('urls');
 
- $app->get('/urls/{id}', function ($request, $response, $args) {
-    //echo "1";
-    var_dump($args);
+ $app->get('/urls/{id}', function ($request, $response, $args) use ($router, $db) {
+    $foundID = $args['id'];
+    $dataUrl = $db->findUrl($foundID);
+    //var_dump($args);
+    if(isset($dataUrl)) {
+        //TODO redirect 
+    }
     $data = [
-        'id' => $args['id']
+        'id' => $args['id'],
+        'dataUrl' => $dataUrl
     ];
-    var_dump($data);
+    //var_dump($data);
     return $this->get('renderer')->render($response, "url.phtml", $data);
  });
  $app->run();
