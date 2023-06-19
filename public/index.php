@@ -39,7 +39,7 @@ $container->set('renderer', function () {
     //$router->urlFor('urls', ['id' => 1]); // /users/4
     //$url = 'http://username:password@hostname:9090/path?arg=value#anchor';
     //$parseUrl = parse_url($url);
-    $newid = $db->insertUrl("'http://username:password@hostname:9090/path?arg=value#anchor'");
+    $newid = $db->insertUrl("http://username:password@hostname:9090/path?arg=value#anchor");
     var_dump($newid);
     var_dump($db->all());
     //echo "1";
