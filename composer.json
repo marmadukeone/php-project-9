@@ -6,7 +6,6 @@
         "psr-4": {
             "PhpProject9\\": "public/",
             "App\\": "app/"
-           
         }
     },
     "require": {
