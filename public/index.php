@@ -36,14 +36,6 @@ $container->set('renderer', function () {
 
 
  $app->get('/', function ($request, $response) use ($router, $db) {
-    //$router->urlFor('urls'); // /users
-    //$router->urlFor('urls', ['id' => 1]); // /users/4
-    //$url = 'http://username:password@hostname:9090/path?arg=value#anchor';
-    //$parseUrl = parse_url($url);
-    //$newid = $db->insertUrl("http://username:password@hostname:9090/path?arg=value#anchor");
-    //var_dump($newid);
-    //var_dump($db->all());
-    //echo "1";
     $messages = $this->get('flash')->getMessages();
     $data = [
         'url' => [],
@@ -54,20 +46,26 @@ $container->set('renderer', function () {
 
  $app->post('/urls', function ($request, $response) use ($router, $db) {
     $url = $request->getParsedBodyParam('url');
-    $validator = new UrlCheker();
-    var_dump($validator);
-    $errors = $validator->valudateUrl($url);
-    if(isset($errors)) {
-        $params = ['url' => $url, 'errors' => $errors];
-        return $this->get('renderer')->render($response->withStatus(422), 'index.phtml', $params);
+    // $validator = new UrlCheker();
+    // var_dump($validator);
+    // $errors = $validator->valudateUrl($url);
+    // //Check errors of validation
+    // if(isset($errors)) {
+    //     $params = ['url' => $url, 'errors' => $errors];
+    //     return $this->get('renderer')->render($response->withStatus(422), 'index.phtml', $params);
+    // }
+    $urlExsit = $db->findId($url['name']);
+    if ($urlExsit) {
+        $id = $urlExsit['id'];
+        $this->get('flash')->addMessage('success', 'Url has been already exist');
+    } else {
+        $id = $db->insertUrl($url['name']);
+        $this->get('flash')->addMessage('success', 'Url has been created');
     }
-    //url already exist
-    //$urlAlreadyExist = $db->findUrl($newUrl)
-    //валидация урла
+    return $response->withRedirect($router->urlFor('url', ['id' => $id]));
  })->setName("addUrl");
 
  $app->get('/urls', function ($request, $response) use ($router, $db) {
-    //TODO add flash
     //TODO получить урлы
     //TODO получить данные по дате последней проверки урлов
     //TODO smapit'
@@ -78,17 +76,17 @@ $container->set('renderer', function () {
  })->setName('urls');
 
  $app->get('/urls/{id}', function ($request, $response, $args) use ($router, $db) {
-    //TODO add flash
+    $messages = $this->get('flash')->getMessages();
     $foundID = $args['id'];
     $dataUrl = $db->findUrl($foundID);
-    //var_dump($args);
     //TODO add dates of url checks
     $data = [
         'id' => $args['id'],
-        'dataUrl' => $dataUrl
+        'dataUrl' => $dataUrl,
+        'messages' => $messages
     ];
     //var_dump($data);
     return $this->get('renderer')->render($response, "url.phtml", $data);
- });
+ })->setName('url');
  $app->run();
  //post na url check

@@ -34,6 +34,15 @@
             </div>
         </nav>
     </header>
+    <?php if (count($messages) > 0): ?>
+        <div class="alert alert-<?= array_key_first($messages) ?>" role="alert">
+            <?php foreach ($messages as $message): ?>
+                <?php foreach ($message as $value): ?>
+                    <?= $value ?>
+                <?php endforeach ?>
+            <?php endforeach ?>
+        </div>
+    <?php endif ?>
 
 
 
