@@ -14,8 +14,12 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use DiDom\Document;
 use Dotenv\createImmutable;
+use Dotenv\Dotenv;
 
 session_start();
+$dotenv = Dotenv::createImmutable(__DIR__ . "/..");
+$dotenv->load();
+
 $db = new Repository();
 $container = new Container();
 $container->set('renderer', function () {
