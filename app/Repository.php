@@ -72,18 +72,18 @@ class Repository
     }
 
     public function addCheck(
-        mixed $id,
-        mixed $statusCode,
+        int $urlId,
+        int $statusCode,
         ?string $title = '',
         ?string $h1 = '',
         ?string $description = ''
-    ): mixed {
+    ) {
         // подготовка запроса для добавления данных
         $created_at = Carbon::now();
-        $sql = 'INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at)
+        $sql = 'INSERT INTO urls_checks (url_id, status_code, h1, title, description, created_at)
         VALUES (:url_id, :status_code, :h1, :title, :description, :created_at)';
         $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':url_id', $id);
+        $stmt->bindValue(':url_id', $urlId);
         $stmt->bindValue(':created_at', $created_at);
         $stmt->bindValue(':status_code', $statusCode);
         $stmt->bindValue(':h1', $h1);
@@ -91,14 +91,15 @@ class Repository
         $stmt->bindValue(':description', $description);
 
         $stmt->execute();
+        print_r("HUI");
 
         // возврат полученного значения id
         return $this->db->lastInsertId();
     }
 
-    public function findCheckUrl(int $id): mixed
+    public function findCheckUrl(int $id)
     {
-        $sql = 'SELECT * FROM url_checks WHERE url_id = :id';
+        $sql = 'SELECT * FROM urls_checks WHERE url_id = :id';
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
@@ -106,9 +107,9 @@ class Repository
         return $result;
     }
 
-    public function findLastCheck(int $id): mixed
+    public function findLastCheck(int $id)
     {
-        $sql = 'SELECT created_at, status_code FROM url_checks WHERE url_id = :id ORDER BY id DESC LIMIT 1;';
+        $sql = 'SELECT created_at, status_code FROM urls_checks WHERE url_id = :id ORDER BY id DESC LIMIT 1;';
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id);
         $stmt->execute();

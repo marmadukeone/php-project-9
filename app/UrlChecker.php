@@ -5,7 +5,7 @@ namespace App;
 use SebastianBergmann\Type\MixedType;
 use Valitron\Validator;
 
-class UrlCheker
+class UrlChecker
 {
     public function valudateUrl(mixed $url): mixed
     {

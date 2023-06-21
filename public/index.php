@@ -7,14 +7,14 @@ require __DIR__ . '/../vendor/autoload.php';
 use Slim\Factory\AppFactory;
 use Slim\Views\PhpRenderer;
 use App\Repository;
-use App\UrlCheker;
+use App\UrlChecker;
 use Carbon\Carbon;
 use Slim\Flash\Messages;
 use DI\Container;
-
+use GuzzleHttp\Client;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-
+use DiDom\Document;
 
 session_start();
 $db = new Repository();
@@ -46,7 +46,7 @@ $container->set('renderer', function () {
 
  $app->post('/urls', function ($request, $response) use ($router, $db) {
     $url = $request->getParsedBodyParam('url');
-    // $validator = new UrlCheker();
+    // $validator = new UrlChecker();
     // var_dump($validator);
     // $errors = $validator->valudateUrl($url);
     // //Check errors of validation
@@ -77,16 +77,53 @@ $container->set('renderer', function () {
 
  $app->get('/urls/{id}', function ($request, $response, $args) use ($router, $db) {
     $messages = $this->get('flash')->getMessages();
-    $foundID = $args['id'];
-    $dataUrl = $db->findUrl($foundID);
+    $dataUrl = $db->findUrl($args['id']);
+    $checks = $db->findCheckUrl($args['id']);
+
     //TODO add dates of url checks
     $data = [
         'id' => $args['id'],
         'dataUrl' => $dataUrl,
-        'messages' => $messages
+        'messages' => $messages,
+        'checks' => $checks
     ];
     //var_dump($data);
     return $this->get('renderer')->render($response, "url.phtml", $data);
  })->setName('url');
+
+ $app->post("/urls/{id}/check", function ($request, $response, $args) use ($router, $db) {
+    $urlId = $args['id'];
+    
+    
+    $urlData = $db->findUrl($urlId);
+    $url = $urlData['name'];
+    //делаем запрос 
+    $client = new Client();
+    try {
+        $res = $client->request('GET', $url, ['connect_timeout' => 3.14]);
+    } catch (GuzzleHttp\Exception\BadResponseException $e) { // Exception 4xx/5xx codes
+        $res = $e->getResponse();
+        $this->get('flash')->addMessage('warning', 'Проверка была выполнена успешно, но сервер ответил с ошибкой');
+        $statusCode = $res->getStatusCode();
+        $urlCheckData = $db->addCheck($urlId, $statusCode);
+        return $response->withRedirect($router->urlFor('url', ['id' => $urlId]));
+    } catch (GuzzleHttp\Exception\ConnectException $e) { // Exception when not connection
+        $this->get('flash')->addMessage('danger', 'Произошла ошибка при проверке, не удалось подключиться');
+        return $response->withRedirect($router->urlFor('url', ['id' => $urlId]));
+    }
+    //Парсин
+    $statusCode = $res->getStatusCode();
+    $html = $res->getBody()->getContents();
+    $document = new Document($html);
+    $title = $document->first('title::text()');
+    $h1 = $document->first('h1::text()') ?: '';
+    $description = $document->first('meta[name=description]') ?: 'хуй';
+
+    $urlCheckData = $db->addCheck($urlId, $statusCode, $title, $h1, $description);
+    //$urlCheckData = $db->addCheck($urlId, 200);
+    $this->get('flash')->addMessage('success', 'Страница успешно проверена');
+
+    return $response->withRedirect($router->urlFor('url', ['id' => $urlId]));
+ })->setName("addCheck");
  $app->run();
  //post na url check

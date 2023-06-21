@@ -77,7 +77,7 @@
                 </table>
             </div>
             <h2 class="mt-5 mb-3">Проверки</h2>
-            <form method="post" action="/urls/1/checks">
+            <form method="post" action="/urls/<?=$dataUrl['id']?>/check">
                 <input type="submit" class="btn btn-primary" value="Запустить проверку">
             </form>
             <table class="table table-bordered table-hover" data-test="checks">
@@ -90,18 +90,16 @@
                         <th>description</th>
                         <th>Дата создания</th>
                     </tr>
-                    <!--?php foreach ($checks as $check): ?-->
+                    <?php foreach ($checks as $check): ?>
                     <tr>
-                        <td>1</td>
-                        <td>200</td>
-                        <td class="text-break"></td>
-                        <td class="text-break">Работа во Владивостоке, поиск персонала и публикация вакансий -
-                            vladivostok.hh.ru</td>
-                        <td class="text-break">vladivostok.hh.ru — сервис, который помогает найти работу и подобрать
-                            персонал во Владивостоке более 20 лет! Создавайте резюме и откликайтесь на вакансии.
-                            Набирайте сотрудников и публикуйте вакансии.</td>
-                        <td>2023-06-15 06:43:38</td>
+                        <td><?= $check['id'] ?></td>
+                        <td><?= $check['status_code'] ?></td>
+                        <td class="text-break"><?= $check['h1'] ?></td>
+                        <td class="text-break"><?= $check['title'] ?></td>
+                        <td class="text-break"><?= $check['description'] ?></td>
+                        <td><?= $check['created_at']?></td>
                     </tr>
+                    <?php endforeach?>
                 </tbody>
             </table>
         </div>
