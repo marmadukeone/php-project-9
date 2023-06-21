@@ -111,16 +111,15 @@ $container->set('renderer', function () {
         $this->get('flash')->addMessage('danger', 'Произошла ошибка при проверке, не удалось подключиться');
         return $response->withRedirect($router->urlFor('url', ['id' => $urlId]));
     }
-    //Парсин
+    //Парсинu
     $statusCode = $res->getStatusCode();
     $html = $res->getBody()->getContents();
     $document = new Document($html);
     $title = $document->first('title::text()');
     $h1 = $document->first('h1::text()') ?: '';
     $description = $document->first('meta[name=description]') ?: 'хуй';
-
+    //TODO descrition fix
     $urlCheckData = $db->addCheck($urlId, $statusCode, $title, $h1, $description);
-    //$urlCheckData = $db->addCheck($urlId, 200);
     $this->get('flash')->addMessage('success', 'Страница успешно проверена');
 
     return $response->withRedirect($router->urlFor('url', ['id' => $urlId]));
