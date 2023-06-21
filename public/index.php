@@ -13,6 +13,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use DiDom\Document;
+use Dotenv\createImmutable;
 
 session_start();
 $db = new Repository();

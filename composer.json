@@ -22,7 +22,8 @@
         "vlucas/valitron": "^1.4",
         "illuminate/support": "^8.83",
         "guzzlehttp/guzzle": "^7.0",
-        "imangazaliev/didom": "^2.0"
+        "imangazaliev/didom": "^2.0",
+        "vlucas/phpdotenv": "^5.5"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "*",

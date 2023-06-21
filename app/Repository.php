@@ -4,6 +4,7 @@ namespace App;
 
 use PDO;
 use Carbon\Carbon;
+use Dotenv\Dotenv;
 
 class Repository
 {
@@ -11,10 +12,12 @@ class Repository
 
     public function __construct()
     {
-        $dbUrl = 'postgresql://aleksandrsarapulov:2211@localhost:5432/project-9';
-        var_dump(getenv());
+        //$dbUrl = 'postgresql://aleksandrsarapulov:2211@localhost:5432/project-9';
+        //var_dump(getenv());
+        $dotenv = Dotenv::createImmutable(__DIR__ . "/..");
+        $env = ($dotenv->load());
         //$databaseUrl = parse_url($_ENV['DATABASE_URL']);
-        $databaseUrl = parse_url($dbUrl);
+        $databaseUrl = parse_url($env['DATABASE_URL']);
         $username = $databaseUrl['user'];
         $password = $databaseUrl['pass'];
         $host = $databaseUrl['host'];
