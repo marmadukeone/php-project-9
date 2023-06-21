@@ -14,11 +14,11 @@ class UrlChecker
         $v->rule('required', 'name');
         if (!$v->rule('required', 'name')->validate()) {
             $errors = ['name' => 'URL must not be empty'];
-       } elseif (!$v->rule('url', 'name')->rule('lengthMax', 'name', 255)->validate()) {
-           $errors = ['name' => 'Length must be max 255'];
-       } else {
-           $errors = [];
-       }
-       return $errors;
+        } elseif (!$v->rule('url', 'name')->rule('lengthMax', 'name', 255)->validate()) {
+            $errors = ['name' => 'Length must be max 255'];
+        } else {
+            $errors = [];
+        }
+        return $errors;
     }
 }

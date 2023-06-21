@@ -20,10 +20,10 @@ class Repository
         $host = $databaseUrl['host'];
         $port = $databaseUrl['port'];
         $dbName = ltrim($databaseUrl['path'], '/');
-        
+
         $dsn = "pgsql:host=$host;port=$port;dbname=$dbName;user=$username;password=$password";
-        var_dump($dsn);
-        var_dump($this->db = new PDO($dsn));
+        //var_dump($dsn);
+        //var_dump($this->db = new PDO($dsn));
         $this->db = new PDO($dsn);
     }
 

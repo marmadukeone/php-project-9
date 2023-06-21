@@ -14,7 +14,7 @@ lint:
 	composer exec --verbose phpstan -- --level=8 analyse src app public tests
 
 lint-fix:
-	composer exec --verbose phpcbf -- --standard=PSR12 public
+	composer exec --verbose phpcbf -- --standard=PSR12 public src app
 
 test:
 	composer exec --verbose phpunit tests

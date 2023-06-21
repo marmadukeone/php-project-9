@@ -45,10 +45,10 @@ $container->set('renderer', function () {
  $app->post('/urls', function ($request, $response) use ($router, $db) {
     $url = $request->getParsedBodyParam('url');
     $validator = new UrlChecker();
-    var_dump($validator);
+    //var_dump($validator);
     $errors = $validator->valudateUrl($url);
     //Check errors of validation
-    if(count($errors) > 0) {
+    if (count($errors) > 0) {
         $params = ['url' => $url, 'errors' => $errors];
         return $this->get('renderer')->render($response->withStatus(422), 'index.phtml', $params);
     }
@@ -102,11 +102,11 @@ $container->set('renderer', function () {
 
  $app->post("/urls/{id}/check", function ($request, $response, $args) use ($router, $db) {
     $urlId = $args['id'];
-    
-    
+
+
     $urlData = $db->findUrl($urlId);
     $url = $urlData['name'];
-    //делаем запрос 
+    //делаем запрос
     $client = new Client();
     try {
         $res = $client->request('GET', $url, ['connect_timeout' => 3.14]);
