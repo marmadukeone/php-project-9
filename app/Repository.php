@@ -14,7 +14,7 @@ class Repository
     {
         //$dbUrl = 'postgresql://aleksandrsarapulov:2211@localhost:5432/project-9';
         //var_dump(getenv());
-        $dotenv = Dotenv::createImmutable(__DIR__ . "/..");
+        $dotenv = Dotenv::createImmutable(__DIR__);
         $env = ($dotenv->load());
         //$databaseUrl = parse_url($_ENV['DATABASE_URL']);
         $databaseUrl = parse_url($env['DATABASE_URL']);
