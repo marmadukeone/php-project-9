@@ -117,8 +117,9 @@ $container->set('renderer', function () {
     $document = new Document($html);
     $title = $document->first('title::text()');
     $h1 = $document->first('h1::text()') ?: '';
-    $description = $document->first('meta[name=description]') ?: 'хуй';
-    //TODO descrition fix
+    $description = $document->has('meta[name=description]')
+        ? $document->first('meta[name=description]')->getAttribute('content') /** @phpstan-ignore-line */
+        : '';
     $urlCheckData = $db->addCheck($urlId, $statusCode, $title, $h1, $description);
     $this->get('flash')->addMessage('success', 'Страница успешно проверена');
 
