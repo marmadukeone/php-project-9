@@ -4,4 +4,5 @@
 Hello ebat'
 
 # TODO
-1. Create .env and Postgresql BD
+1. Create .env and connect from it
+2. Fix workflow

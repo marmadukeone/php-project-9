@@ -1,8 +1,6 @@
 <?php
 
-namespace PhpProject9;
-
-require __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use Slim\Factory\AppFactory;
 use Slim\Views\PhpRenderer;
@@ -46,14 +44,15 @@ $container->set('renderer', function () {
 
  $app->post('/urls', function ($request, $response) use ($router, $db) {
     $url = $request->getParsedBodyParam('url');
-    // $validator = new UrlChecker();
-    // var_dump($validator);
-    // $errors = $validator->valudateUrl($url);
-    // //Check errors of validation
-    // if(isset($errors)) {
-    //     $params = ['url' => $url, 'errors' => $errors];
-    //     return $this->get('renderer')->render($response->withStatus(422), 'index.phtml', $params);
-    // }
+    $validator = new UrlChecker();
+    var_dump($validator);
+    $errors = $validator->valudateUrl($url);
+    //Check errors of validation
+    if(count($errors) > 0) {
+        $params = ['url' => $url, 'errors' => $errors];
+        return $this->get('renderer')->render($response->withStatus(422), 'index.phtml', $params);
+    }
+    //Check if url already exist
     $urlExsit = $db->findId($url['name']);
     if ($urlExsit) {
         $id = $urlExsit['id'];
@@ -66,11 +65,23 @@ $container->set('renderer', function () {
  })->setName("addUrl");
 
  $app->get('/urls', function ($request, $response) use ($router, $db) {
-    //TODO получить урлы
-    //TODO получить данные по дате последней проверки урлов
-    //TODO smapit'
+    $dataUrls = $db->all();
+    $listUrls = [];
+    foreach ($dataUrls as $url) {
+        $id = $url['id'];
+        $name = $url['name'];
+        $lastTime = $db->findLastCheck($id);
+        $created_at = $lastTime['created_at'] ?? '';
+        $statusCode = $lastTime['status_code'] ?? '';
+        $listUrls[] = [
+            'id' => $id,
+            'name' => $name,
+            'status_code' => $statusCode,
+            'created_at' => $created_at
+        ];
+    }
     $data = [
-        'urls' => $db->all()
+        'urls' => $listUrls
     ];
     return $this->get('renderer')->render($response, "urls.phtml", $data);
  })->setName('urls');
@@ -79,8 +90,6 @@ $container->set('renderer', function () {
     $messages = $this->get('flash')->getMessages();
     $dataUrl = $db->findUrl($args['id']);
     $checks = $db->findCheckUrl($args['id']);
-
-    //TODO add dates of url checks
     $data = [
         'id' => $args['id'],
         'dataUrl' => $dataUrl,
