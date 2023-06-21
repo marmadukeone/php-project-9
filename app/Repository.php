@@ -11,10 +11,10 @@ class Repository
 
     public function __construct()
     {
-        //$dbUrl = 'postgresql://aleksandrsarapulov:2211@localhost:5432/project-9';
-
-        $databaseUrl = parse_url($_ENV['DATABASE_URL']);
-        //$databaseUrl = parse_url($dbUrl);
+        $dbUrl = 'postgresql://aleksandrsarapulov:2211@localhost:5432/project-9';
+        var_dump(getenv());
+        //$databaseUrl = parse_url($_ENV['DATABASE_URL']);
+        $databaseUrl = parse_url($dbUrl);
         $username = $databaseUrl['user'];
         $password = $databaseUrl['pass'];
         $host = $databaseUrl['host'];
