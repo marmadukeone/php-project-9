@@ -61,10 +61,10 @@ $container->set('renderer', function () {
     $urlExsit = $db->findId($url['name']);
     if ($urlExsit) {
         $id = $urlExsit['id'];
-        $this->get('flash')->addMessage('success', 'Url has been already exist');
+        $this->get('flash')->addMessage('success', 'Страница уже существует');
     } else {
         $id = $db->insertUrl($url['name']);
-        $this->get('flash')->addMessage('success', 'Url has been created');
+        $this->get('flash')->addMessage('success', 'Страница успешно добавлена');
     }
     return $response->withRedirect($router->urlFor('url', ['id' => $id]));
  })->setName("addUrl");
