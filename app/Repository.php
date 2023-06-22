@@ -94,7 +94,7 @@ class Repository
         $stmt->bindValue(':description', $description);
 
         $stmt->execute();
-        print_r("HUI");
+       // print_r("HUI");
 
         // возврат полученного значения id
         return $this->db->lastInsertId();
