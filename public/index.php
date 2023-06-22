@@ -132,7 +132,6 @@ $container->set('renderer', function () {
     $html = $res->getBody()->getContents();
     $document = new Document($html);
     $title = $document->first('title::text()') ?: '';
-    $title = (string) $title;
     $h1 = $document->first('h1::text()') ?: '';
     $description = $document->has('meta[name=description]')
         ? $document->first('meta[name=description]')->getAttribute('content') /** @phpstan-ignore-line */
