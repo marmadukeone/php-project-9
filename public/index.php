@@ -131,8 +131,9 @@ $container->set('renderer', function () {
     $statusCode = $res->getStatusCode();
     $html = $res->getBody()->getContents();
     $document = new Document($html);
-    $title = (string) $document->first('title::text()');
-    $h1 = (string) $document->first('h1::text()') ?: '';
+    $title = $document->first('title::text()') ?: '';
+    $title = (string) $title;
+    $h1 = $document->first('h1::text()') ?: '';
     $description = $document->has('meta[name=description]')
         ? $document->first('meta[name=description]')->getAttribute('content') /** @phpstan-ignore-line */
         : '';

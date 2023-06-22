@@ -5,6 +5,7 @@ namespace App;
 use PDO;
 use Carbon\Carbon;
 use Dotenv\Dotenv;
+use SebastianBergmann\Type\MixedType;
 
 class Repository
 {
