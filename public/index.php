@@ -131,11 +131,27 @@ $container->set('renderer', function () {
     $statusCode = $res->getStatusCode();
     $html = $res->getBody()->getContents();
     $document = new Document($html);
-    $title = $document->first('title::text()') ?: '';
-    $h1 = $document->first('h1::text()') ?: '';
-    $description = $document->has('meta[name=description]')
-        ? $document->first('meta[name=description]')->getAttribute('content') /** @phpstan-ignore-line */
-        : '';
+    
+    // Parse title
+    $titleElm = $document->first('title');
+    $title = '';
+    if ($titleElm) {
+        $title = $titleElm->text();
+    }
+    
+    // Parse h1
+    $h1Elem = $document->first('h1');
+    $h1 = '';
+    if ($h1Elem) {
+        $h1 = $h1Elem->text();
+    }
+
+    $descriptionElm = $document->first('meta[name=description]');
+    $description = '';
+    if ($descriptionElm) {
+        $description = $descriptionElm->getAttribute('content') ?? '';
+    }
+    
     $urlCheckData = $db->addCheck($urlId, $statusCode, $title, $h1, $description);
     $this->get('flash')->addMessage('success', 'Страница успешно проверена');
 
