@@ -117,7 +117,9 @@ $container->set('renderer', function () {
         $res = $client->request('GET', $url, ['connect_timeout' => 3.14]);
     } catch (GuzzleHttp\Exception\BadResponseException $e) { // Exception 4xx/5xx codes
         $res = $e->getResponse();
-        $this->get('flash')->addMessage('warning', 'Проверка была выполнена успешно, но сервер ответил с ошибкой');
+        //$this->get('flash')->addMessage('warning', 'Проверка была выполнена успешно, но сервер ответил с ошибкой');
+        $this->get('flash')->addMessage('warning', 'Страница успешно проверена');
+
         $statusCode = $res->getStatusCode();
         $urlCheckData = $db->addCheck($urlId, $statusCode);
         return $response->withRedirect($router->urlFor('url', ['id' => $urlId]));
