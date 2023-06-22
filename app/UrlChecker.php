@@ -13,9 +13,9 @@ class UrlChecker
         $v = new Validator($url);
         $v->rule('required', 'name');
         if (!$v->rule('required', 'name')->validate()) {
-            $errors = ['name' => 'URL must not be empty'];
+            $errors = ['name' => 'Некорректный URL'];
         } elseif (!$v->rule('url', 'name')->rule('lengthMax', 'name', 255)->validate()) {
-            $errors = ['name' => 'Length must be max 255'];
+            $errors = ['name' => 'Некорректный URL'];
         } else {
             $errors = [];
         }
