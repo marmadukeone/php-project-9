@@ -38,7 +38,7 @@ $container->set('renderer', function () {
  $router = $app->getRouteCollector()->getRouteParser();
 
 
- $app->get('/', function ($request, $response) use ($router, $db) {
+ $app->get('/', function ($request, $response) {
     $messages = $this->get('flash')->getMessages();
     $data = [
         'url' => [],
@@ -69,7 +69,7 @@ $container->set('renderer', function () {
     return $response->withRedirect($router->urlFor('url', ['id' => $id]));
  })->setName("addUrl");
 
- $app->get('/urls', function ($request, $response) use ($router, $db) {
+ $app->get('/urls', function ($request, $response) use ($db) {
     $dataUrls = $db->all();
     $listUrls = [];
     foreach ($dataUrls as $url) {
@@ -91,7 +91,7 @@ $container->set('renderer', function () {
     return $this->get('renderer')->render($response, "urls.phtml", $data);
  })->setName('urls');
 
- $app->get('/urls/{id}', function ($request, $response, $args) use ($router, $db) {
+ $app->get('/urls/{id}', function ($request, $response, $args) use ($db) {
     $messages = $this->get('flash')->getMessages();
     $dataUrl = $db->findUrl($args['id']);
     $checks = $db->findCheckUrl($args['id']);

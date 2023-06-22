@@ -7,7 +7,7 @@ use Valitron\Validator;
 
 class UrlChecker
 {
-    public function valudateUrl($url)
+    public function valudateUrl(array $url)
     {
         $errors = [];
         $v = new Validator($url);
