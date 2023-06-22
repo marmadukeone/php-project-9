@@ -83,7 +83,7 @@ class Repository
     ) {
         // подготовка запроса для добавления данных
         $created_at = Carbon::now();
-        $sql = 'INSERT INTO urls_checks (url_id, status_code, h1, title, description, created_at)
+        $sql = 'INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at)
         VALUES (:url_id, :status_code, :h1, :title, :description, :created_at)';
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':url_id', $urlId);
@@ -102,7 +102,7 @@ class Repository
 
     public function findCheckUrl(int $id)
     {
-        $sql = 'SELECT * FROM urls_checks WHERE url_id = :id';
+        $sql = 'SELECT * FROM url_checks WHERE url_id = :id';
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
@@ -112,7 +112,7 @@ class Repository
 
     public function findLastCheck(int $id)
     {
-        $sql = 'SELECT created_at, status_code FROM urls_checks WHERE url_id = :id ORDER BY id DESC LIMIT 1;';
+        $sql = 'SELECT created_at, status_code FROM url_checks WHERE url_id = :id ORDER BY id DESC LIMIT 1;';
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
